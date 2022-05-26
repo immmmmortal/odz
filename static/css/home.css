@@ -1,0 +1,10 @@
+.card {
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.my_cards {
+    display: flex;
+    flex-direction: row;
+}

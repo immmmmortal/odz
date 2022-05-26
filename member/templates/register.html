@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Register{% endblock %}
+
+
+
+{% block content %}
+    {# Registration form #}
+    <div class="register_content_and_message">
+        {% if form.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Holy guacamole!</strong> There was an error with your form...
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+        <div class="register_content">
+            <form action="{% url 'register_user' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <br/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
