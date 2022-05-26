@@ -1,12 +1,8 @@
-from django.shortcuts import render, redirect
-
-# Create your views here.
-
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-
-from CPL.models import User
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
 
 
 def login_user(request):
@@ -16,7 +12,11 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/')
+            response = redirect('/')
+            # Setting the cookies
+            response.set_cookie('username', username)
+            response.set_cookie('login_status', True)
+            return response
         else:
             # Return an 'invalid login' error message.
             messages.success(request, 'invalid login')
@@ -29,7 +29,12 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     messages.success(request, 'Successfully logged out')
-    return redirect('home')
+    response = HttpResponseRedirect(reverse('login_user'))
+    # Deleting cookies
+    response.delete_cookie('username')
+    response.delete_cookie('login_status')
+
+    return response
 
 
 def register_user(request):
@@ -49,7 +54,3 @@ def register_user(request):
     return render(request, 'register.html', {
         'form': form,
     })
-
-
-
-

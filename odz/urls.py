@@ -16,11 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from CPL.views import event_page
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', event_page, name='home'),
+    path('', include('CPL.urls')),
     path('member/', include('member.urls')),
     path('member/', include('django.contrib.auth.urls')),
 ]

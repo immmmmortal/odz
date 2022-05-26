@@ -22,38 +22,90 @@
                 </ul>
                 <div class="card-footer">
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal"
-                            data-target="#register_for_a_ride">
-                        Register for a ride
-                    </button>
-                    <form method="post">
-                        {#                    modal #}
+                    {% if user.is_authenticated %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#register_for_a_ride">
+                            Register for a ride
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#register_proposal_for_unsigned_user">
+                            Register for a ride
+                        </button>
+                        {# modal #}
+                        <form action="/login_user_from_modal" method="post">
+                            <div class="modal" tabindex="-1" role="dialog" id="register_proposal_for_unsigned_user">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"><strong>Login to register in a ride!</strong></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="login_content_in_modal">
+                                                <form action="" method="post" id="login_form">
+                                                    {% csrf_token %}
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="formGroupExampleInput">Enter your
+                                                                username: </label>
+                                                            <input type="text" class="form-control"
+                                                                   id="formGroupExampleInput"
+                                                                   name="username_login_through_modal"
+                                                                   placeholder="example@example.com">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="formGroupExampleInput2">Enter your
+                                                                password:</label>
+                                                            <input type="password" class="form-control"
+                                                                   id="formGroupExampleInput2"
+                                                                   name="password_login_through_modal">
+                                                        </div>
+                                                    </form>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    {% endif %}
+
+                    <form action="/register_for_logged_user" method="post">
+                        {# modal #}
                         <div class="modal" tabindex="-1" role="dialog" id="register_for_a_ride">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Modal title</h5>
+                                        <h5 class="modal-title">Register for {{ event.event_name }}</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="" method="post" id="register_for_a_ride_form">
-                                            {% csrf_token %}
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="formGroupExampleInput">Enter your full name: </label>
-                                                    <input type="text" class="form-control" id="formGroupExampleInput"
-                                                           name="full_name_register_for_a_ride"
-                                                           placeholder="Viktor Korneplod">
-                                                    <label for="formGroupExampleInput">Enter your email: </label>
-                                                    <input type="email" class="form-control" id="formGroupExampleInput"
-                                                           name="email_register_for_a_ride"
-                                                           placeholder="example@example.com">
-                                                </div>
-                                                {#                                            <button type="submit" class="btn btn-primary">Submit</button>#}
-                                            </form>
-                                        </form>
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput">Enter your
+                                                full name: </label>
+                                            <input type="text" class="form-control"
+                                                   id="formGroupExampleInput"
+                                                   name="full_name_of_logged_user"
+                                                   placeholder="Viktor Korneplod">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput2">Enter your
+                                                email: </label>
+                                            <input type="email" class="form-control"
+                                                   id="formGroupExampleInput2"
+                                                   name="email_of_logged_user">
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
