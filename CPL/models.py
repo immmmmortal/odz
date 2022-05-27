@@ -30,18 +30,6 @@ class CyclingEvent(models.Model):
     prize_pool = models.FloatField()
     event_date = models.DateField()
     participating_group = models.ForeignKey('EventParticipatingGroup', on_delete=models.CASCADE)
-    event_view = models.ManyToManyField('UserIP', related_name='event_views', blank=True)
-
-    def total_views(self):
-        return self.event_view.count()
 
     def __str__(self):
         return self.event_name
-
-
-class UserIP(models.Model):
-    # Class for tracking registration of ride members
-    ip = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.ip

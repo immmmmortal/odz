@@ -15,10 +15,15 @@ def show_cycling_events(request):
     events_list = p.get_page(page)
 
     if 'login_status' in request.COOKIES and 'username' in request.COOKIES:
+        # Number of visits to this view, as counted in the session variable
+        num_visits = request.session.get('num_visits', 0)
+        request.session['num_visits'] = num_visits + 1
+
         return render(request, 'home.html', {
             'events': events_list,
             'username': request.COOKIES['username'],
             'login_status': request.COOKIES['login_status'],
+            'num_visits': num_visits,
         })
 
     return render(request, 'home.html', {

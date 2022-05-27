@@ -40,10 +40,13 @@
                     <h5 class="card-title">{{ event.event_name }}</h5>
                     <p class="card-text">{{ event.event_description }}</p>
                 </div>
+
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
-                        Total ride members:
-                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="list-group-item">
+                            Total views per session: {{ num_visits }}
+                        </li>
+                    {% endif %}
                     <li class="list-group-item">
                         Distance: {{ event.distance }}km
                     </li>
