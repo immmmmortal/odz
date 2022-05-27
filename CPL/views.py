@@ -8,7 +8,7 @@ from CPL.models import CyclingEvent, User
 
 def show_cycling_events(request):
     # Shows cycling events from DB
-    events = CyclingEvent.objects.all()
+    events = CyclingEvent.objects.all().order_by('event_name')
     # Pagination
     p = Paginator(events, per_page=2)
     page = request.GET.get('page')
@@ -19,12 +19,10 @@ def show_cycling_events(request):
             'events': events_list,
             'username': request.COOKIES['username'],
             'login_status': request.COOKIES['login_status'],
-
         })
 
     return render(request, 'home.html', {
         'events': events_list,
-
     })
 
 

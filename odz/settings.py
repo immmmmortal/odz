@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     'CPL.apps.CplConfig',
     'member.apps.MemberConfig',
+
 ]
 
 MIDDLEWARE = [
