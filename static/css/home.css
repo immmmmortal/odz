@@ -1,10 +1,38 @@
-.card {
-    margin-right: 20px;
-    margin-left: 20px;
-    margin-top: 20px;
+.card {;
+    margin: 5px 3%;
+    height: auto;
+    min-height: fit-content;
+}
+
+.paginator {
+    background: #24252A;
+}
+
+.paginator-child {
+    text-align: center;
+
+}
+
+.home-pagination {
+    font-family: "SF Mono", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+a {
+    color: white;
+}
+
+.alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: auto;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
 }
 
 .my_cards {
     display: flex;
     flex-direction: row;
+    background: #24252A;
 }

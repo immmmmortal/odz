@@ -1,14 +1,30 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
 from CPL.models import CyclingEvent, User
 
 
 def show_cycling_events(request):
+    # Shows cycling events from DB
     events = CyclingEvent.objects.all()
+    # Pagination
+    p = Paginator(events, per_page=2)
+    page = request.GET.get('page')
+    events_list = p.get_page(page)
+
+    if 'login_status' in request.COOKIES and 'username' in request.COOKIES:
+        return render(request, 'home.html', {
+            'events': events_list,
+            'username': request.COOKIES['username'],
+            'login_status': request.COOKIES['login_status'],
+
+        })
+
     return render(request, 'home.html', {
-        'events': events
+        'events': events_list,
+
     })
 
 
@@ -21,7 +37,10 @@ def login_user_from_modal(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'Successful login')
-            return redirect('home')
+            response = redirect('home')
+            response.set_cookie('username', username)
+            response.set_cookie('login_status', True)
+            return response
         else:
             # Return an 'invalid login' error message.
             messages.success(request, 'Invalid login')
@@ -39,3 +58,16 @@ def register_user_for_a_ride(request):
         return redirect('home')
 
     return render(request, 'home.html')
+
+
+def show_user_cookies(request):
+    # Shows cookies for logged user when button pressed
+    if 'login_status' in request.COOKIES and 'username' in request.COOKIES:
+        cookies_context = {
+            'username': request.COOKIES['username'],
+            'login_status': request.COOKIES['login_status']
+        }
+        return render(request, 'home.html', cookies_context)
+
+    messages.success(request, 'Login to see your cookies')
+    return redirect('home')

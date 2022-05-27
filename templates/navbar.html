@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>navbar title</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+<body>
+<header>
+    <a href="/">
+        <img class="logo" src="/static/images/icons8-cyclist-96.png" alt=" logo">
+    </a>
+    <nav>
+        <ul class="nav_links">
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout_user' %}">Logout</a></li>
+                <a class="cta" href="#">
+                    <button class="nav-button" data-toggle="modal" data-target="#cookiesModal">Cookies</button>
+                </a>
+            {% else %}
+                <li><a href="/">Home</a></li>
+                <li><a href="{% url 'login_user' %}">Login</a></li>
+                <li><a href="{% url 'register_user' %}">Register</a></li>
+
+                </ul>
+                </nav>
+
+            {% endif %}
+</header>
+
+
+</body>
+</html>

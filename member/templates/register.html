@@ -6,7 +6,7 @@
 
 
 {% block content %}
-    {# Registration form #}
+    {# Error message section #}
     <div class="register_content_and_message">
         {% if form.errors %}
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -16,14 +16,18 @@
                 </button>
             </div>
         {% endif %}
+        {# Error message section #}
+
+        {# Registration form #}
         <div class="register_content">
             <form action="{% url 'register_user' %}" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-
                 <br/>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
+        {# Registration form #}
+
     </div>
 {% endblock %}

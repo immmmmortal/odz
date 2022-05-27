@@ -1,123 +1,196 @@
 {% extends 'base.html' %}
-
 {% load static %}
+
+
 {% block title %}Home{% endblock %}
 
 
-
 {% block content %}
+    {#    Modal from navbar, showing cookies to logged user#}
+    <div class="modal fade" id="cookiesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Hi, {{ username }}!
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Login status: {{ login_status }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#    Modal from navbar, showing cookies to logged user#}
+
     {# cards with Cycling events#}
     <div class="my_cards">
         {% for event in events %}
-            <div class="card border-dark mb-3" style="width: 18rem;">
-                <img class="card-img-top" src="/static/images/{{ forloop.counter }}.jpg" alt="Card image cap">
+            <div class="card bg-light mb-3" style="width: 18rem;">
+                <img class="card-img-top" src="{{ event.cycling_event_image.url }}" width="120"
+                     alt="no image">
                 <div class="card-body">
                     <h5 class="card-title">{{ event.event_name }}</h5>
                     <p class="card-text">{{ event.event_description }}</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Distance: {{ event.distance }}</li>
-                    <li class="list-group-item">Prize pool: {{ event.prize_pool }}$</li>
+
+                    <li class="list-group-item">
+                        Distance: {{ event.distance }}km
+                    </li>
+                    <li class="list-group-item"><p>
+                    </p> Prize pool: {{ event.prize_pool }}$
+                    </li>
                     <li class="list-group-item">Date: {{ event.event_date }}</li>
                 </ul>
-                <div class="card-footer">
+                <div class="card-footer ">
+
                     <!-- Button trigger modal -->
+                    {# Checking if user authenticated or not#}
                     {% if user.is_authenticated %}
                         <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#register_for_a_ride">
+                                data-target="#register_for_a_ride_{{ forloop.counter }}">
                             Register for a ride
                         </button>
+                        {# If not authenticated then button triggers modal for user to log in#}
                     {% else %}
                         <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#register_proposal_for_unsigned_user">
+                                data-target="#register_proposal_for_unsigned_user_{{ forloop.counter }}">
                             Register for a ride
                         </button>
-                        {# modal #}
-                        <form action="/login_user_from_modal" method="post">
-                            <div class="modal" tabindex="-1" role="dialog" id="register_proposal_for_unsigned_user">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title"><strong>Login to register in a ride!</strong></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="login_content_in_modal">
-                                                <form action="" method="post" id="login_form">
-                                                    {% csrf_token %}
-                                                    <form>
-                                                        <div class="form-group">
-                                                            <label for="formGroupExampleInput">Enter your
-                                                                username: </label>
-                                                            <input type="text" class="form-control"
-                                                                   id="formGroupExampleInput"
-                                                                   name="username_login_through_modal"
-                                                                   placeholder="example@example.com">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="formGroupExampleInput2">Enter your
-                                                                password:</label>
-                                                            <input type="password" class="form-control"
-                                                                   id="formGroupExampleInput2"
-                                                                   name="password_login_through_modal">
-                                                        </div>
-                                                    </form>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                            </button>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                     {% endif %}
 
-                    <form action="/register_for_logged_user" method="post">
-                        {# modal #}
-                        <div class="modal" tabindex="-1" role="dialog" id="register_for_a_ride">
+                    {# Modal for not logged users #}
+                    <form action="/login_user_from_modal" method="post">
+                        <div class="modal" tabindex="-1" role="dialog"
+                             id="register_proposal_for_unsigned_user_{{ forloop.counter }}">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Register for {{ event.event_name }}</h5>
+                                        <h5 class="modal-title"><strong>Login to register
+                                            for {{ event.event_name }}</strong></h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                            <label for="formGroupExampleInput">Enter your
-                                                full name: </label>
-                                            <input type="text" class="form-control"
-                                                   id="formGroupExampleInput"
-                                                   name="full_name_of_logged_user"
-                                                   placeholder="Viktor Korneplod">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="formGroupExampleInput2">Enter your
-                                                email: </label>
-                                            <input type="email" class="form-control"
-                                                   id="formGroupExampleInput2"
-                                                   name="email_of_logged_user">
+                                        <div class="login_content_in_modal">
+                                            <form action="" method="post" id="login_form">
+                                                {% csrf_token %}
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="formGroupExampleInput">
+                                                            Enter your username:
+                                                        </label>
+                                                        <input type="text" class="form-control"
+                                                               id="formGroupExampleInput"
+                                                               name="username_login_through_modal"
+                                                               placeholder="example@example.com">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="formGroupExampleInput2">
+                                                            Enter your password:
+                                                        </label>
+                                                        <input type="password" class="form-control"
+                                                               id="formGroupExampleInput2"
+                                                               name="password_login_through_modal">
+                                                    </div>
+                                                </form>
+                                            </form>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                         </button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
+                    {# Modal for not logged users #}
+
+                    {# Modal for logged users #}
+                    <form action="/register_for_logged_user" method="post">
+                        <div class="modal"
+                             tabindex="-1"
+                             role="dialog"
+                             id="register_for_a_ride_{{ forloop.counter }}">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title"><strong>
+                                            Hi, {{ username }} you can register for {{ event.event_name }}
+                                        </strong></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="login_content_in_modal">
+                                            <form action="" method="post" id="login_form">
+                                                {% csrf_token %}
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label for="formGroupExampleInput">
+                                                            Enter your full name:
+                                                        </label>
+                                                        <input type="text" class="form-control"
+                                                               id="formGroupExampleInput"
+                                                               name="full_name_of_logged_user"
+                                                               placeholder="Viktor Korneplod">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="formGroupExampleInput2">
+                                                            Enter your email:
+                                                        </label>
+                                                        <input type="email"
+                                                               class="form-control"
+                                                               id="formGroupExampleInput2"
+                                                               name="email_of_logged_user">
+                                                    </div>
+                                                </form>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    {# Modal for logged users #}
+
                 </div>
             </div>
         {% endfor %}
+    </div>
+
+    <div class="paginator">
+        <div class="paginator-child">
+            {% if events.has_previous %}
+                <a href="?page=1">&laquo First</a>
+                <a href="?page={{ events.previous_page_number }}">Previous </a>
+            {% endif %}
+
+            <label class="home-pagination" style="color: white;">
+                {{ events.number }} of {{ events.paginator.num_pages }}
+            </label>
+
+            {% if events.has_next %}
+                <a href="?page={{ events.next_page_number }}"> next</a>
+                <a href="?page={{ events.paginator.num_pages }}">Last &raquo</a>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, reverse
 
 
 def login_user(request):
+    # Login user
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -27,6 +28,7 @@ def login_user(request):
 
 
 def logout_user(request):
+    # Log out user
     logout(request)
     messages.success(request, 'Successfully logged out')
     response = HttpResponseRedirect(reverse('login_user'))
@@ -38,16 +40,21 @@ def logout_user(request):
 
 
 def register_user(request):
+    # Register user
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data['email']
+            username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
-            user = authenticate(username, password)
+            user = authenticate(username=username, password=password)
+            response = redirect('home')
+            # Setting the cookies
+            response.set_cookie('username', username)
+            response.set_cookie('login_status', True)
             login(request, user)
             messages.success(request, 'Registration successful')
-            return redirect('home')
+            return response
     else:
         form = UserCreationForm()
 

@@ -13,16 +13,17 @@ class User(models.Model):
 
 class EventParticipatingGroup(models.Model):
     group_id = models.IntegerField()
-    member = models.ManyToManyField('User')
+    ride_member = models.ManyToManyField('User')
 
     def get_group_members(self):
-        return ', '.join([g.full_name for g in self.member.all()])
+        return ', '.join([g.full_name for g in self.ride_member.all()])
 
     def __str__(self):
         return str(self.group_id)
 
 
 class CyclingEvent(models.Model):
+    cycling_event_image = models.ImageField(null=True, upload_to='upload', blank=True)
     event_name = models.TextField(verbose_name='Cycling Event')
     event_description = models.TextField()
     distance = models.TextField()
