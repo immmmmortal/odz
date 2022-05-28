@@ -2,9 +2,9 @@
 # Installation
 
 1. - clone the project
- 
-  https://github.com/immmmmortal/odz.git
- 
+ ```
+  git clone https://github.com/immmmmortal/odz.git
+ ```
 2. - create and start a a virtual environment
  ```
    virtualenv env --no-site-packages
@@ -14,13 +14,13 @@
 ```
    pip install -r requirements.txt
 ```
-4. - Create secrets.sh
+4. - Create .env
 ```
-   touch secrets.sh
+   touch .env
 ```
 5. - obtain a secret from [MiniWebTool](https://miniwebtool.com/django-secret-key-generator/) key and add to secrets.sh
-6. - add secret to secrets.sh
-7. - add secrets.sh to .gitignore file
+6. - add secret to .env
+7. - add .env to .gitignore file
 8. - then run
 ```
    python manage.py migrate
