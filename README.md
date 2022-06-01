@@ -31,7 +31,7 @@
 ```
 10.- Then to makemigrations for the app
 ```
-    python manage.py makemigrations ig_miner_app
+    python manage.py makemigrations
 ```
 11. - Again run migrate
 ```
