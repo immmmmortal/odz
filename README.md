@@ -18,7 +18,7 @@
 ```
    touch .env
 ```
-5. - obtain a secret from [MiniWebTool](https://miniwebtool.com/django-secret-key-generator/) key and add to secrets.sh
+5. - obtain a secret from [(https://miniwebtool.com/django-secret-key-generator/)](https://djecrety.ir/) key and add to secrets.sh
 6. - add secret to .env
 7. - add .env to .gitignore file
 8. - then run
